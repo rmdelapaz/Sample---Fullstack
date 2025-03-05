@@ -1,18 +1,8 @@
-# [windbnb]
-
-## Database Schema Design
-
-![db-schema]
-
-[db-schema]: ![alt text](images/schema-image-name.png)
-
-## API Documentation
-
 <!--!!START SILENT -->
 # AirBnB Clone
 <!--!!END -->
 <!--!!ADD -->
-<!-- # `<name of application here>` -->
+<!-- # `<windbnb>` -->
 <!--!!END_ADD -->
 
 ## Database Schema Design
@@ -24,7 +14,8 @@
 [airbnb-db-diagram-info]: https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-12/airbnb-db-diagram-info.txt
 <!--!!END -->
 <!--!!ADD -->
-<!-- `<insert database schema design here>` -->
+<!-- `<<img width="633" alt="406637047-f1a33a23-9580-4eb7-9ee5-4126921c6ada" src="https://github.com/user-attachments/assets/8e0c1ba3-5bf6-4380-8ba6-c9b9c5bdbf58" />
+insert database schema design here>` -->
 <!--!!END_ADD -->
 
 ## API Documentation
