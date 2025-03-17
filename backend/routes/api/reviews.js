@@ -157,26 +157,26 @@ router.put(
       const { user } = req;
       const { review, stars } = req.body;
 
-      const reviews = await Review.findByPk(reviewId);
+      const existingReview = await Review.findByPk(reviewId);
 
-      if (!reviews) {
+      if (!existingReview) {
         return res.status(404).json({
           message: "Review couldn't be found",
         });
       }
 
-      if (reviews.userId !== user.id) {
+      if (existingReview.userId !== user.id) {
         return res.status(403).json({
           message: "Forbidden",
         });
       }
 
-      await reviews.update({
+      await existingReview.update({
         review,
         stars,
       });
 
-      return res.status(200).json(reviews);
+      return res.status(200).json(existingReview);
     } catch (error) {
       next(error);
     }

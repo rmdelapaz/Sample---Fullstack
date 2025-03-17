@@ -61,15 +61,15 @@ function CreateSpot() {
       address,
       city,
       state,
-      lat: lat || null,
-      lng: lng || null,
+      lat: lat ? parseFloat(lat) : null,
+      lng: lng ? parseFloat(lng) : null,
       description,
       name,
-      price,
+      price: price ? parseFloat(price) : null,
     };
 
     const imageUrls = [previewImage, ...images.filter((url) => url.trim() !== '')];
-
+    console.log("Sending Spot Data:", newSpot);
     try {
       const createdSpot = await dispatch(createSpot(newSpot, imageUrls));
       navigate(`/spots/${createdSpot.id}`);

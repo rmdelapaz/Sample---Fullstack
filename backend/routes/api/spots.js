@@ -254,23 +254,11 @@ router.get("/", validateQueryParams, async (req, res, next) => {
 });
 
 //CREATE A SPOT
+
 router.post("/", requireAuth, validateSpot, async (req, res, next) => {
   try {
-    const { address, city, state, country, lat, lng, name, description } =
-      req.body;
-    let { price } = req.body;
-    const { user } = req;
-
-    price = parseFloat(price);
-
-    if (isNaN(price)) {
-      return res
-        .status(400)
-        .json({ error: "Price per day must be a positive number" });
-    }
-
-    const newSpot = await Spot.create({
-      ownerId: user.id,
+    console.log("Received Spot Creation Data:", req.body);
+    const {
       address,
       city,
       state,
@@ -280,10 +268,43 @@ router.post("/", requireAuth, validateSpot, async (req, res, next) => {
       name,
       description,
       price,
+    } = req.body;
+    const { user } = req;
+
+    if (
+      !address ||
+      !city ||
+      !state ||
+      !country ||
+      !description ||
+      !name ||
+      !price
+    ) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    if (isNaN(price) || price <= 0) {
+      return res
+        .status(400)
+        .json({ message: "Price must be a valid positive number" });
+    }
+
+    const newSpot = await Spot.create({
+      ownerId: user.id,
+      address,
+      city,
+      state,
+      country,
+      lat: lat ? parseFloat(lat) : null,
+      lng: lng ? parseFloat(lng) : null,
+      name,
+      description,
+      price: parseFloat(price),
     });
 
     return res.status(201).json(newSpot);
   } catch (error) {
+    console.error("Error creating spot:", error);
     next(error);
   }
 });
