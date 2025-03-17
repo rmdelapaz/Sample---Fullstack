@@ -1,36 +1,90 @@
-/* frontend/src/components/SignupFormPage/SignupForm.css */
-
-form {
-    display: flex;
-    flex-direction: column;
-    max-width: 400px;
-    margin: auto;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
   }
   
-  label {
-    margin: 10px 0;
+  form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+
+    border-radius: 8px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333333;
+    font-size: 24px;
+    margin-bottom: 20px;
   }
   
   input {
-    padding: 8px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  button {
-    margin-top: 10px;
+    width: 100%;
     padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  
-  p {
-    color: red;
+    margin-bottom: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
     font-size: 14px;
   }
   
+  input:focus {
+    border-color: #66afe9;
+    outline: none;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.5);
+  }
+  .signup-button {
+    background-color: #FF5A5F; 
+    color: white; 
+    padding: 10px 20px; 
+    font-size: 15px; 
+    border: none; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    width: 100%; 
+    margin-top: 20px; 
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s ease, opacity 0.3s ease; 
+  }
+  
+  .signup-button:hover {
+    background-color: #E13A3A; 
+    opacity: 0.9; 
+  }
+  .signup-button:disabled {
+    background-color: #f56f6f;
+    opacity: 0.6;
+    border-color: #ddd;
+    color: white;
+  }
+  /* Error Messages */
+  p {
+    color: #d9534f;
+    font-size: 13px;
+    margin: -10px 0 10px 0;
+    font-weight: bold;
+  }
+    h1 {
+      font-size: 20px;
+    }
+  
+    button {
+      font-size: 14px;
+      background: #ff5a5f;
+   color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+    }
+    button:hover{
+      background-color: #e13a3a;
+}
+  button:disabled {
+    background-color: #ccc;
+    color: #666 
+  }

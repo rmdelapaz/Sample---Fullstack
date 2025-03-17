@@ -1,86 +1,91 @@
-// frontend/src/components/Navigation/ProfileButton.jsx
-import { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-import * as sessionActions from "../../store/session";
-import OpenModalButton from "../OpenModalButton/OpenModalButton";
-import LoginFormModal from "../LoginFormModal/LoginFormModal";
-import SignupFormModal from "../SignupFormModal/SignupFormModal";
-import "./ProfileButton.css";
+import { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import * as sessionActions from '../../store/session';
+import { FaUserCircle } from "react-icons/fa";
+import { TfiMenu } from "react-icons/tfi";
+import OpenModalButton from '../OpenModalButton/OpenModalButton';
+import LoginFormModal from '../LoginFormModal/LoginFormModal';
+import SignupFormModal from '../SignupFormModal/SignupFormModal';
+import { Link, useNavigate } from 'react-router-dom';
 
-function ProfileButton({ user }) {
-    const dispatch = useDispatch();
-    const [showMenu, setShowMenu] = useState(false);
-    const ulRef = useRef();
+function ProfileButton() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.session.user);
+  const [showMenu, setShowMenu] = useState(false);
 
-    const toggleMenu = (e) => {
-        e.stopPropagation();
-        setShowMenu(!showMenu);
+  const ulRef = useRef();
+
+  const toggleMenu = (e) => {
+    e.stopPropagation();
+    setShowMenu(!showMenu);
+  };
+
+  useEffect(() => {
+    if (!showMenu) return;
+
+    const closeMenu = (e) => {
+      if (!ulRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
     };
 
-    useEffect(() => {
-        if (!showMenu) return;
+    document.addEventListener('click', closeMenu);
 
-        const closeMenu = (e) => {
-            if (!ulRef.current.contains(e.target)) {
-                setShowMenu(false);
-            }
-        };
+    return () => document.removeEventListener("click", closeMenu);
+  }, [showMenu]);
 
-        document.addEventListener("click", closeMenu);
-        return () => document.removeEventListener("click", closeMenu);
-    }, [showMenu]);
+  const closeMenu = () => setShowMenu(false);
 
-    const closeMenu = () => setShowMenu(false);
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch(sessionActions.logout());
+    closeMenu();
+    navigate("/");
+  };
+  const ulClassName = `profile-dropdown ${showMenu ? "visible" : "hidden"}`;
 
-    const logout = (e) => {
-        e.preventDefault();
-        dispatch(sessionActions.logout());
-        closeMenu();
-    };
-
-    const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-
-    return (
-        <>
-            <button className="profile-button" onClick={toggleMenu}>
-                <img
-                    src="https://redeem-innovations.com/wp-content/uploads/2025/03/gale_16809038.png"
-                    alt="Profile Icon"
-                    className="profile-icon"
-                />
-            </button>
-
-            <ul className={ulClassName} ref={ulRef}>
-                {user ? (
-                    <>
-                        <li>{user.username}</li>
-                        <li>{user.firstName} {user.lastName}</li>
-                        <li>{user.email}</li>
-                        <li>
-                            <button onClick={logout}>Log Out</button>
-                        </li>
-                    </>
-                ) : (
-                    <>
-                        <li>
-                            <OpenModalButton
-                                buttonText="Log In"
-                                modalComponent={<LoginFormModal />}
-                                onButtonClick={closeMenu}
-                            />
-                        </li>
-                        <li>
-                            <OpenModalButton
-                                buttonText="Sign Up"
-                                modalComponent={<SignupFormModal />}
-                                onButtonClick={closeMenu}
-                            />
-                        </li>
-                    </>
-                )}
-            </ul>
-        </>
-    );
+  return (
+    <>
+      <button className="dropdown-toggle" onClick={toggleMenu}>
+        <TfiMenu size={24} className="menu-icon" color="gray" />
+        <FaUserCircle size={24} color="gray" />
+      </button>
+      <ul className={ulClassName} ref={ulRef}>
+        {user ? (
+          <>
+            <li className="greeting">Hello, {user?.firstname}</li>
+            <li className="user-info">{user?.email}</li>
+            <li>
+              <Link to="/manage-spots" className="manage-spots-link">
+                Manage Spots
+              </Link>
+            </li>
+            <li>
+              <button onClick={logout} className="logout-button">
+                Log Out
+              </button>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <OpenModalButton
+                buttonText="Log In"
+                modalComponent={<LoginFormModal />}
+              />
+            </li>
+            <li>
+              <OpenModalButton
+                buttonText="Sign Up"
+                modalComponent={<SignupFormModal />}
+              />
+            </li>
+          </>
+        )}
+      </ul>
+    </>
+  );
 }
 
 export default ProfileButton;

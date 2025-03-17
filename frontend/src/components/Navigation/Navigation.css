@@ -1,20 +1,226 @@
-/* frontend/src/components/Navigation/Navigation.css */
-
 ul {
-    list-style: none;
-    display: flex;
-    gap: 10px;
-  }
-  
-  .profile-dropdown {
-    position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    display: block;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-bottom: 2px solid #CCCCCC;
+  padding: 0 20px;
+  height: 70px;
+}
+
+
+a {
+  text-decoration: none;
+  color: #000000;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  text-decoration: none !important;
+}
+
+
+.dropdown-container {
+  position: relative;
+  display: inline-block; 
+}
+
+.dropdown-toggle {
+  width: 100%;
+  background: transparent;
+  border: 1px black !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 15px;
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 30px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.dropdown-toggle:hover {
+  background-color: whitesmoke !important;
+  color: none;
+}
+
+.menu-icon {
+  margin-right: 8px; 
+}
+
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  border: 1px solid #ddd;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 15px 20px; 
+  list-style: none;
+  width: 200px;
+  display: block;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f4f4f4; 
+}
+
+
+.dropdown-menu button {
+  background: transparent;
+  color: black;
+  text-align: left;
+  font-size: 17px;
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 0;
+  cursor: pointer;
+  border: none;
+  box-shadow: none;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+
+.dropdown-menu button:hover {
+  background-color: whitesmoke; 
+  opacity: 1; 
+  color: black;
+}
+
+.dropdown-menu button:focus {
+  outline: none;
+}
+.logo-container {
+  display: flex;
+  align-items: center;  
+  gap: 8px;            
+  text-decoration: none !important;
+}
+
+.logo-text {
+  font-size: 22px; 
+  color: rgb(243, 63, 63);  
+  text-decoration: none !important;
+}
+.navigation button {
+  background-color: white;
+  border: 1px solid rgb(243, 63, 63);
+  padding: 10px 15px;
+  font-size: 15px;
+  cursor: pointer;
+  color: rgb(243, 63, 63);
+}
+
+.navigation button:hover {
+background-color: rgb(243, 63, 63);
+ color: white;
+}
+.profile-dropdown {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  padding: 15px;
+  z-index: 1000;
+  display: none;
+  text-align: center;
+  min-height: 160px; 
+}
+
+.profile-dropdown.visible {
+  display: block;
+}
+
+.greeting {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.user-info {
+  margin-bottom: 15px;
+  color: #555;
+  font-size: 16px;
+}
+
+.manage-spots-link {
+  display: inline-block;
+  margin: 10px 0; 
+  padding: 10px 0;
+  text-decoration: none;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  width: 100%
+}
+
+.logout-button {
+  width: 200px;
+  padding: 10px;
+  background-color: #ff5a5f;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #e13a3a;
+}
+.create-spot-link {
+  margin-right: 10px; 
+  color: teal;
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center; 
+  gap: 15px; 
+}
+.auth-buttons-container {
+  gap: 10px;
+}
+.auth-buttons-container button {
+  width: 100%;
+  color: black; 
+  border: none;
+  padding: 10px 15px;
+  font-size: 15px;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; 
+}
+.auth-buttons-container button:hover {
+  background-color: whitesmoke; 
+  color: black; 
+}
+
+.custom-logo {
+  height: 50px; 
+  width: auto; 
+  object-fit: contain;
+}

@@ -1,16 +1,26 @@
-// frontend/src/components/OpenModalButton/OpenModalButton.jsx
-import { useModal } from "../../context/Modal";
+import { useModal } from '../../context/Modal';
 
-function OpenModalButton({ modalComponent, buttonText, onButtonClick }) {
-    const { setModalContent } = useModal();
+function OpenModalButton({
+  modalComponent,
+  buttonText,
+  onButtonClick,
+  onModalClose,
+  className
+}) {
+  const { setModalContent, setOnModalClose } = useModal();
 
-    const onClick = () => {
-        if (typeof onButtonClick === "function") onButtonClick();
-        setTimeout(() => setModalContent(modalComponent), 0);
-    };
+  const onClick = (e) => {
+    e.stopPropagation();
+    if (onButtonClick) onButtonClick(e);
+    if (onModalClose) setOnModalClose(onModalClose);
+    setModalContent(modalComponent);
+  };
 
-    return <button onClick={onClick}>{buttonText}</button>;
+  return (
+    <button className={className} onClick={onClick}>
+      {buttonText}
+    </button>
+  );
 }
-
 
 export default OpenModalButton;

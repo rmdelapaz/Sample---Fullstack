@@ -1,0 +1,245 @@
+.spot-detail-page {
+  max-width: 1200px;    
+  margin: auto;
+    
+  font-family: Arial, sans-serif;
+  
+}
+@media (max-width: 768px) {
+  .spot-images {
+    flex-direction: column;   
+  }
+
+  .thumbnail-grid {
+    grid-template-columns: 1fr;   
+  }
+}
+@media (min-width: 1200px) {
+  .spot-detail-page {
+    max-width: 1200px;   
+     
+  }
+}
+.spot-detail-page .spot-header {
+  display: flex;
+  flex-direction: column;   
+  align-items: flex-start;   
+  
+}
+.spot-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.spot-header h2 {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Images Section */
+.spot-images {
+  display: flex;   
+  gap: 10px;  
+  align-items: flex-start;   
+}
+
+.main-image-container {
+  flex: 1;   
+}
+
+.main-image {
+  width: 100%;
+  height: 405px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.thumbnail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);   
+  grid-gap: 10px;   
+  flex: 1;   
+}
+
+.thumbnail {
+  width: 100%;
+  height: 195px;   
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+  
+.content-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.spot-info {
+  flex: 2;
+  padding-right: 20px;
+  font-size: 1rem;
+  color: #444;
+}
+
+.spot-info p {
+  color: #000;  
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.reserve-box {
+  padding: 20px;
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.reserve-box .info-container {
+  display: flex; 
+  justify-content: center; 
+  gap: 10px; 
+  align-items: baseline; 
+  margin-bottom: 20px; 
+}
+
+.reserve-box .price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #FF5A5F;
+}
+
+.reserve-box .per-night {
+  font-size: 1rem;
+  color: #666;
+}
+
+.reserve-box .reserve-button {
+  padding: 10px 20px;
+  background-color: #FF5A5F;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  width: 100%;   
+}
+
+
+.reserve-box button:hover {
+  background-color: #D15D5D;
+}
+
+.rating {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Reviews Section */
+.reviews-section {
+  margin-top: 30px;
+  padding: 20px;
+  border-top: 1px solid #ddd; 
+  background-color: #f9f9f9; 
+}
+
+
+.reviews-list {
+  margin-top: 20px;
+}
+
+.review-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.review-item p {
+  margin: 5px 0;
+  color: #444;
+}
+
+.review-item strong {
+  font-weight: bold;
+}
+
+/* Review Form */
+textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.spot-detail-page .button {
+  background-color: #FF5A5F;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.spot-detail-page .button:hover {
+  background-color: #ccc ; 
+  color: #666 ;
+}
+.spot-detail-page .button:disabled {
+  background-color: #ccc ; 
+  color: #666 ;
+}
+
+.post-review-container {
+  margin-bottom: 20px; 
+}
+.delete-review-button {
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-review-button:hover {
+  background-color: #e04145;
+}
+.post-review-button {
+  background-color: #444; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  font-size: 1rem; 
+  cursor: pointer; 
+  border-radius: 5px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); 
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+  text-align: center; 
+}
+.post-review-button:hover {
+  background-color: #333; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); 
+}
+.no-reviews-text {
+  font-size: 1rem; 
+  font-weight: bold; 
+  color: #444; 
+}
