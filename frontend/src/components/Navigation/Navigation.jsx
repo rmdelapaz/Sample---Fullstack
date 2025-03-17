@@ -5,8 +5,9 @@ import ProfileButton from './ProfileButton';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
-import { FaUserCircle } from "react-icons/fa";
-import { TfiMenu } from "react-icons/tfi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCircle, faBars } from "@fortawesome/free-solid-svg-icons";
+
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
@@ -64,8 +65,9 @@ function Navigation({ isLoaded }) {
         ) : (
           <>
             <button className="dropdown-toggle" onClick={toggleDropdown}>
-              <TfiMenu size={24} className="menu-icon" color="black" />
-              <FaUserCircle size={24} color="black" />
+              <FontAwesomeIcon icon={faBars} size="lg" className="menu-icon" color="black" />
+              <FontAwesomeIcon icon={faUserCircle} size="lg" color="black" />
+
             </button>
             {showDropdown && <ul className="dropdown-menu">{isLoaded && sessionLinks}</ul>}
           </>
