@@ -122,7 +122,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
   try {
     const userId = req.user.id;
     const spots = await Spot.findAll({
-      where: userId,
+      where: { ownerId: userId },
       attributes: {
         include: [
           [Sequelize.fn("AVG", Sequelize.col("Reviews.stars")), "avgRating"],
@@ -134,9 +134,20 @@ router.get("/current", requireAuth, async (req, res, next) => {
           model: Review,
           attributes: [],
         },
+        {
+          model: SpotImage, //Include SpotImage to fetch the preview image
+          attributes: ["url"],
+          where: { preview: true },
+          required: false,
+        },
       ],
       group: ["Spot.id"],
     });
+
+    const formattedSpots = spots.map((spot) => ({
+      ...spot.toJSON(),
+      previewImage: spot.SpotImages.length > 0 ? spot.SpotImages[0].url : null, //Ensure preview image is available
+    }));
 
     return res.status(200).json({ Spots: spots });
   } catch (error) {
