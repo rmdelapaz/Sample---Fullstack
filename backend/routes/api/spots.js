@@ -24,9 +24,11 @@ const validateSpot = [
     .exists({ checkFalsy: true })
     .withMessage("Country is required"),
   check("lat")
+    .optional()
     .isFloat({ min: -90, max: 90 })
     .withMessage("Latitude must be within -90 and 90"),
   check("lng")
+    .optional()
     .isFloat({ min: -180, max: 180 })
     .withMessage("Longitude must be within -180 and 180"),
   check("name")
@@ -231,16 +233,22 @@ router.get("/", validateQueryParams, async (req, res, next) => {
       attributes: {
         include: [
           [Sequelize.fn("AVG", Sequelize.col("Reviews.stars")), "avgRating"],
-          [Sequelize.literal("'image url'"), "previewImage"],
         ],
       },
       include: [
+        {
+          model: SpotImage,
+          attributes: ["url"],
+          where: { preview: true }, // ✅ Fetch the actual preview image
+          required: false,
+        },
         {
           model: Review,
           attributes: [],
           required: false,
         },
       ],
+
       group: ["Spot.id"],
       limit: size,
       offset: (page - 1) * size,
@@ -257,6 +265,7 @@ router.get("/", validateQueryParams, async (req, res, next) => {
 
 router.post("/", requireAuth, validateSpot, async (req, res, next) => {
   try {
+    console.log("Received Spot Data:", req.body);
     console.log("Received Spot Creation Data:", req.body);
     const {
       address,

@@ -1,14 +1,23 @@
-'use strict';
+"use strict";
 
-const { Model } = require('sequelize');
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     static associate(models) {
-      Spot.belongsTo(models.User, { foreignKey: 'ownerId', as: 'Owner' });
-      Spot.hasMany(models.Review, { foreignKey: 'spotId', onDelete: 'CASCADE' });
-      Spot.hasMany(models.Booking, { foreignKey: 'spotId', onDelete: 'CASCADE' });
-      Spot.hasMany(models.SpotImage, { foreignKey: 'spotId', onDelete: 'CASCADE' });
+      Spot.belongsTo(models.User, { foreignKey: "ownerId", as: "Owner" });
+      Spot.hasMany(models.Review, {
+        foreignKey: "spotId",
+        onDelete: "CASCADE",
+      });
+      Spot.hasMany(models.Booking, {
+        foreignKey: "spotId",
+        onDelete: "CASCADE",
+      });
+      Spot.hasMany(models.SpotImage, {
+        foreignKey: "spotId",
+        onDelete: "CASCADE",
+      });
     }
   }
 
@@ -17,48 +26,48 @@ module.exports = (sequelize, DataTypes) => {
       ownerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: { model: 'Users' }
+        references: { model: "Users" },
       },
       address: {
         type: DataTypes.STRING(50),
-        allowNull: false
+        allowNull: false,
       },
       city: {
         type: DataTypes.STRING(50),
-        allowNull: false
+        allowNull: false,
       },
       state: {
         type: DataTypes.STRING(50),
-        allowNull: false
+        allowNull: false,
       },
       country: {
         type: DataTypes.STRING(50),
-        allowNull: false
+        allowNull: false,
       },
       lat: {
         type: DataTypes.FLOAT,
-        allowNull: false
+        allowNull: true,
       },
       lng: {
         type: DataTypes.FLOAT,
-        allowNull: false
+        allowNull: true,
       },
       name: {
         type: DataTypes.STRING(50),
-        allowNull: false
+        allowNull: false,
       },
       description: {
         type: DataTypes.TEXT,
-        allowNull: false
+        allowNull: false,
       },
       price: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
-      }
+        allowNull: false,
+      },
     },
     {
       sequelize,
-      modelName: 'Spot'
+      modelName: "Spot",
     }
   );
   return Spot;

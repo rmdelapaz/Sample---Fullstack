@@ -1,12 +1,12 @@
-import { csrfFetch } from './csrf';
+import { csrfFetch } from "./csrf";
 
 // Action Types
-const CREATE_SPOT = 'spots/createSpot';
-const GET_SPOT_DETAILS = 'spots/getSpotDetails';
-const GET_ALL_SPOTS = 'spots/getAllSpots';
-const UPDATE_SPOT = 'spots/updateSpot';
-const DELETE_SPOT = 'spots/deleteSpot';
-const CLEAR_ERRORS = 'spots/clearErrors';
+const CREATE_SPOT = "spots/createSpot";
+const GET_SPOT_DETAILS = "spots/getSpotDetails";
+const GET_ALL_SPOTS = "spots/getAllSpots";
+const UPDATE_SPOT = "spots/updateSpot";
+const DELETE_SPOT = "spots/deleteSpot";
+const CLEAR_ERRORS = "spots/clearErrors";
 
 // Action Creators
 export const createSpotAction = (spot) => ({
@@ -39,50 +39,53 @@ export const clearErrorsAction = () => ({
 });
 
 // Thunks
-export const createSpot = (spotData, imageUrls) => async (dispatch) => {
-  try {
-    // Step 1: Create the spot
-    const res = await csrfFetch('/api/spots', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(spotData),
-    });
-
-    if (res.ok) {
-      const spot = await res.json();
-
-      // Step 2: Add images for the spot
-      const imagePromises = imageUrls.map(async (url, index) => {
-        const res = await csrfFetch(`/api/spots/${spot.id}/images`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            url,
-            preview: index === 0, // Mark the first image as the preview
-          }),
-        });
-
-        if (!res.ok) {
-          const errors = await res.json();
-          throw errors;
-        }
-        return res.json();
+export const createSpot =
+  (spotData, imageUrls = []) =>
+  async (dispatch) => {
+    try {
+      // Step 1: Create the spot
+      const res = await csrfFetch("/api/spots", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(spotData),
       });
 
-      await Promise.all(imagePromises);
+      if (res.ok) {
+        const spot = await res.json();
 
-      // Dispatch and return the new spot
-      dispatch(createSpotAction(spot));
-      return spot;
-    } else {
-      const errors = await res.json();
-      throw errors;
+        // Step 2: Add images for the spot
+        if (imageUrls.length > 0) {
+          const imagePromises = imageUrls.map(async (url, index) => {
+            const res = await csrfFetch(`/api/spots/${spot.id}/images`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                url,
+                preview: index === 0,
+              }),
+            });
+
+            if (!res.ok) {
+              const errors = await res.json();
+              throw errors;
+            }
+            return res.json();
+          });
+
+          await Promise.all(imagePromises);
+        }
+
+        dispatch(createSpotAction(spot));
+        return spot;
+      } else {
+        const errors = await res.json();
+        throw errors;
+      }
+    } catch (err) {
+      console.error("Error creating spot:", err);
+      throw err;
     }
-  } catch (err) {
-    console.error('Error creating spot:', err);
-    throw err;
-  }
-};
+  };
 
 export const getSpotDetails = (spotId) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}`);
@@ -93,18 +96,18 @@ export const getSpotDetails = (spotId) => async (dispatch) => {
 };
 
 export const getAllSpots = () => async (dispatch) => {
-  const res = await csrfFetch('/api/spots');
+  const res = await csrfFetch("/api/spots");
   if (res.ok) {
     const spots = await res.json();
-    dispatch(getAllSpotsAction(spots));
+    dispatch(getAllSpotsAction(spots.Spots));
   }
 };
 
 export const updateSpot = (spotId, updatedSpot) => async (dispatch) => {
   try {
     const res = await csrfFetch(`/api/spots/${spotId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedSpot),
     });
 
@@ -112,18 +115,18 @@ export const updateSpot = (spotId, updatedSpot) => async (dispatch) => {
       const spot = await res.json();
       dispatch(updateSpotAction(spot));
 
-      // Fetch updated spot list if necessary
-      const allSpotsRes = await csrfFetch('/api/spots');
+      // Fetch updated spot list
+      const allSpotsRes = await csrfFetch("/api/spots");
       const allSpots = await allSpotsRes.json();
-
       dispatch(getAllSpotsAction(allSpots.Spots));
+
       return spot;
     } else {
       const errors = await res.json();
       throw errors;
     }
   } catch (err) {
-    console.error('Failed to update spot:', err);
+    console.error("Failed to update spot:", err);
     throw err;
   }
 };
@@ -131,17 +134,18 @@ export const updateSpot = (spotId, updatedSpot) => async (dispatch) => {
 export const deleteSpot = (spotId) => async (dispatch) => {
   try {
     const res = await csrfFetch(`/api/spots/${spotId}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
 
     if (res.ok) {
-      dispatch(deleteSpotAction(spotId)); // Update the Redux store directly
+      dispatch(deleteSpotAction(spotId));
     }
   } catch (err) {
-    console.error('Failed to delete spot:', err);
+    console.error("Failed to delete spot:", err);
     throw err;
   }
 };
+
 // Initial State
 const initialState = {
   spot: null,
@@ -169,8 +173,12 @@ const spotReducer = (state = initialState, action) => {
     case GET_ALL_SPOTS: {
       const spots = {};
       action.payload.forEach((spot) => {
-        spots[spot.id] = spot;
+        spots[spot.id] = {
+          ...spot,
+          previewImage: spot.SpotImages?.[0]?.url || "/placeholder.jpg",
+        };
       });
+
       return {
         ...state,
         spots,
@@ -186,10 +194,10 @@ const spotReducer = (state = initialState, action) => {
     }
     case DELETE_SPOT: {
       const newSpots = { ...state.spots };
-      delete newSpots[action.payload]; 
+      delete newSpots[action.payload];
       return {
         ...state,
-        spots: newSpots, 
+        spots: newSpots,
       };
     }
     case CLEAR_ERRORS: {
