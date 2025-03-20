@@ -146,7 +146,10 @@ router.get("/current", requireAuth, async (req, res, next) => {
 
     const formattedSpots = spots.map((spot) => ({
       ...spot.toJSON(),
-      previewImage: spot.SpotImages.length > 0 ? spot.SpotImages[0].url : null, //Ensure preview image is available
+      previewImage:
+        spot.SpotImages?.length > 0
+          ? spot.SpotImages[0].url
+          : "/default-image.png", //Ensure preview image is available
     }));
 
     return res.status(200).json({ Spots: spots });

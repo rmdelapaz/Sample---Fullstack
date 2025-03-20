@@ -1,54 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllSpots } from '../../store/spot';
 import { Link } from 'react-router-dom';
 import './SpotList.css';
 
 const SpotList = () => {
-  const [spots, setSpots] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch(); //Get Redux dispatcher
+  const spots = useSelector(state => Object.values(state.spots.spots)); //Get spots from Redux store
+  const loading = useSelector(state => !state.spots.spots || Object.keys(state.spots.spots).length === 0); //Loading check
+
 
   useEffect(() => {
-    const fetchSpots = async () => {
-      try {
-        const response = await fetch('/api/spots');
-        const data = await response.json();
-
-        // Fetch reviews 
-        const spotsWithRatings = await Promise.all(
-          data.Spots.map(async (spot) => {
-            const reviewsRes = await fetch(`/api/spots/${spot.id}/reviews`);
-            const reviewsData = await reviewsRes.json();
-
-            //average rating
-            const reviews = reviewsData.Reviews || [];
-            const reviewCount = reviews.length;
-            const averageRating = reviewCount
-              ? (reviews.reduce((sum, review) => sum + review.stars, 0) / reviewCount).toFixed(1)
-              : "New";
-
-            return {
-              ...spot,
-              avgStarRating: averageRating,
-              numReviews: reviewCount
-            };
-          })
-        );
-        const sortedSpots = spotsWithRatings.sort((a, b) =>
-          new Date(b.updatedAt || b.createdAt) -
-          new Date(a.updatedAt || a.createdAt)
-        );
-        setSpots(sortedSpots);
-      } catch (error) {
-        console.error('Error fetching spots:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSpots();
-  }, []);
+    if (!spots.length) { //Only fetch spots if Redux store is empty
+      dispatch(getAllSpots());
+    }
+  }, [dispatch, spots.length]); //Dependency array updated
 
   if (loading) {
-
     return <div className="loading">Loading spots...</div>;
   }
 
@@ -63,17 +31,14 @@ const SpotList = () => {
               className="spot-image"
             />
             <div className="spot-info">
-              {/* Spot name and rating */}
               <div className="spot-header">
                 <h2 className="spot-name" title={spot.name}>{spot.name}</h2>
                 <div className="spot-rating">
-                  <span className="star-icon">★</span>
+                  <span className="star-icon">⭐️</span>
                   {spot.avgStarRating}{" "}
                   {spot.numReviews > 0 ? `· ${spot.numReviews} Review${spot.numReviews > 1 ? "s" : ""}` : ""}
                 </div>
               </div>
-
-              {/* Location and price */}
               <p className="spot-location">
                 {spot.city}, {spot.state}
               </p>
