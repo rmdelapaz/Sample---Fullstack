@@ -117,7 +117,7 @@ function ManageSpots() {
                     {spot.name}
                   </h2>
                   <div className="spot-rating">
-                    <span className="star-icon">★</span>
+                    <span className="star-icon">⭐️</span>
                     {spot.avgStarRating}{" "}
                     {spot.numReviews > 0
                       ? `· ${spot.numReviews} Review${spot.numReviews > 1 ? "s" : ""

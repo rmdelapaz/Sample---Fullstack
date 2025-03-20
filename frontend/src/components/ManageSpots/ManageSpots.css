@@ -99,12 +99,12 @@
   }
   
   .update-button {
-    background-color: lightblue;
+    background-color: rgb(83, 74, 140);
     color: white;
   }
   
   .update-button:hover {
-    background-color: rgb(154, 154, 233);
+    background-color: rgb(51, 157, 71);
   }
   
   .custom-delete-button {
