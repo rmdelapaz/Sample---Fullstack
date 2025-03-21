@@ -70,13 +70,14 @@ p {
   margin-bottom: 15px;
 }
 .demo-user-link {
-  color: #FF5A5F;   
+  color: teal;   
   text-align: center;
   font-size: 17px;
   text-decoration: underline;
   cursor: pointer;
   margin-bottom: 11px;
   display: block;  
+  background-color: yellow;
 }
 
 .demo-user-link:hover {
