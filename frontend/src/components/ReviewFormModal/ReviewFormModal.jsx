@@ -46,7 +46,7 @@ function ReviewForm({ spotId, onAddReview }) {
               style={{ cursor: 'pointer' }}
             >
               {hoverStars > index || stars > index ? (
-                <FaStar color="#FF5A5F" size={30} />
+                <FaStar color="#FFD700" size={30} />
               ) : (
                 <FaRegStar color="#ddd" size={30} />
               )}
