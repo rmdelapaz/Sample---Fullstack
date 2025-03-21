@@ -92,7 +92,7 @@ function SpotDetail() {
             <span className="price">{`$${spot.price}`}</span>
             <span className="per-night">/ night</span>
             <div className="rating">
-              <span>★ {averageRating}</span>
+              <span>⭐️ {averageRating}</span>
               {reviewCount > 0 && (
                 <span>
                   {" "}

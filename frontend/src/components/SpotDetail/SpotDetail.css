@@ -223,11 +223,12 @@ select {
   background-color: #e04145;
 }
 .post-review-button {
-  background-color: #444; 
+  background-color: #FF5A5F; 
   color: white; 
   border: none; 
   padding: 10px 20px; 
   font-size: 1rem; 
+  font-weight: bold;
   cursor: pointer; 
   border-radius: 5px; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); 
@@ -235,7 +236,7 @@ select {
   text-align: center; 
 }
 .post-review-button:hover {
-  background-color: #333; 
+  background-color: #E0484E; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); 
 }
 .no-reviews-text {
