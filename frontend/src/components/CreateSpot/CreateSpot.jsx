@@ -29,15 +29,17 @@ function CreateSpot() {
 
     const formErrors = {};
 
-    if (!country) formErrors.country = 'Country is required';
-    if (!address) formErrors.address = 'Address is required';
-    if (!city) formErrors.city = 'City is required';
-    if (!state) formErrors.state = 'State is required';
-    if (!description || description.length < 30)
+    if (!country.trim()) formErrors.country = 'Country is required';
+    if (!address.trim()) formErrors.address = 'Address is required';
+    if (!city.trim()) formErrors.city = 'City is required';
+    if (!state.trim()) formErrors.state = 'State is required';
+    if (!description.trim() || description.trim().length < 30)
       formErrors.description = 'Description needs 30 or more characters';
-    if (!name) formErrors.name = 'Name is required';
-    if (!price) formErrors.price = 'Price per night is required';
-    if (!previewImage) formErrors.previewImage = 'Preview Image URL is required';
+    if (!name.trim()) formErrors.name = 'Name is required';
+    if (!price.trim() || isNaN(price) || parseFloat(price) <= 0)
+      formErrors.price = 'Price per night must be a valid positive number';
+
+    if (!previewImage.trim()) formErrors.previewImage = 'Preview Image URL is required';
     const isValidImageUrl = (url) => /^https?:\/\/.*\.(jpg|jpeg|png|gif)(\?.*)?$/i.test(url);
 
     if (!isValidImageUrl(previewImage)) {
@@ -57,14 +59,14 @@ function CreateSpot() {
     }
     setIsSubmitting(true);
     const newSpot = {
-      country,
-      address,
-      city,
-      state,
+      country: country.trim(),
+      address: address.trim(),
+      city: city.trim(),
+      state: state.trim(),
       lat: lat ? parseFloat(lat) : null,
       lng: lng ? parseFloat(lng) : null,
-      description,
-      name,
+      description: description.trim(),
+      name: name.trim(),
       price: price ? parseFloat(price) : null,
     };
 
