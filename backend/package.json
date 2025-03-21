@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "npm run start:development",
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
     "start": "per-env",
     "start:development": "nodemon ./bin/www",
     "start:production": "node ./bin/www",
-    "build": "npm install && node backend/psql-setup-script.js",
+    "build": "node psql-setup-script.js",
     "db:reset": "rm -rf ./db/dev.db && npx dotenv sequelize db:migrate && npx dotenv sequelize db:seed:all"
   },
   "keywords": [],
