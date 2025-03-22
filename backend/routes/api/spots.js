@@ -247,6 +247,7 @@ router.get("/", validateQueryParams, async (req, res, next) => {
       attributes: {
         include: [
           [Sequelize.fn("AVG", Sequelize.col("Reviews.stars")), "avgRating"],
+          [Sequelize.fn("COUNT", Sequelize.col("Reviews.id")), "numReviews"],
         ],
       },
       include: [
