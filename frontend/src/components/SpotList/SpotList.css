@@ -19,7 +19,7 @@
     flex-direction: column;
     background-color: white;
     border: 1px solid #ddd;
-    border-radius: 12px;
+    border-radius: 17px;
     overflow: hidden;
     text-decoration: none !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -101,7 +101,7 @@
   }
   
   
-  @media (max-width: 768px) {
+  @media (max-width: 750px) {
     .spot-list {
       grid-template-columns: 1fr 1fr;
     }
