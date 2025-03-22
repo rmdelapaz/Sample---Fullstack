@@ -2,11 +2,21 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllSpots } from '../../store/spot';
 import { Link } from 'react-router-dom';
+import { createSelector } from 'reselect';
 import './SpotList.css';
+
+
+//  Memoized selector to avoid returning new array every time
+const selectSpotsObj = state => state.spots.spots;
+const selectSpots = createSelector(
+  [selectSpotsObj],
+  spotsObj => Object.values(spotsObj)
+);
+
 
 const SpotList = () => {
   const dispatch = useDispatch(); //Get Redux dispatcher
-  const spots = useSelector(state => Object.values(state.spots.spots)); //Get spots from Redux store
+  const spots = useSelector(selectSpots);
   const loading = useSelector(state => !state.spots.spots || Object.keys(state.spots.spots).length === 0); //Loading check
 
 
