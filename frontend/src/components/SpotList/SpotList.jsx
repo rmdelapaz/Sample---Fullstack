@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllSpots } from '../../store/spot';
 import { Link } from 'react-router-dom';
@@ -17,19 +17,21 @@ const selectSpots = createSelector(
 const SpotList = () => {
   const dispatch = useDispatch(); //Get Redux dispatcher
   const spots = useSelector(selectSpots);
-  const loading = useSelector(state => !state.spots.spots || Object.keys(state.spots.spots).length === 0); //Loading check
+  const [isLoaded, setIsLoaded] = useState(false);
 
 
   useEffect(() => {
-    if (!spots.length) { //Only fetch spots if Redux store is empty
-      dispatch(getAllSpots());
-    }
-  }, [dispatch, spots.length]); //Dependency array updated
+    const fetchSpots = async () => {
+      await dispatch(getAllSpots()); // ➡️ Wait for Redux to load spots
+      setIsLoaded(true); // ➡️ Set loading state after Redux call
+    };
 
-  if (loading) {
-    return <div className="loading">Loading spots...</div>;
+    fetchSpots(); // ➡️ Always fetch on mount (don't rely on Redux to know if empty)
+  }, [dispatch]);
+
+  if (!isLoaded) {
+    return <div className="loading">Loading spots...</div>; // ➡️ Show loading until local flag is true
   }
-
   return (
     <div className="spot-list">
       {spots.length > 0 ? (
