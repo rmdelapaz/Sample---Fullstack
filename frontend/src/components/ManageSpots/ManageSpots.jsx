@@ -1,94 +1,37 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getAllSpots } from "../../store/spot";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import DeleteSpotModal from "../DeleteSpot/DeleteSpot";
 import "./ManageSpots.css";
 
 function ManageSpots() {
-  const [spots, setSpots] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const sessionUser = useSelector((state) => state.session.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const sessionUser = useSelector((state) => state.session.user);
+  const spotsObj = useSelector((state) => state.spots.spots);
+  const allSpots = Object.values(spotsObj);
+  const userSpots = allSpots.filter((spot) => spot.ownerId === sessionUser?.id);
+
   useEffect(() => {
-    const fetchSpots = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`/api/spots/current`);
-        const data = await response.json();
-
-        const spotsWithRatings = await Promise.all(
-          data.Spots.map(async (spot) => {
-            const reviewsRes = await fetch(`/api/spots/${spot.id}/reviews`);
-            const reviewsData = await reviewsRes.json();
-
-            const reviews = reviewsData.Reviews || [];
-            const reviewCount = reviews.length;
-            const averageRating =
-              reviewCount > 0
-                ? (
-                  reviews.reduce((sum, review) => sum + review.stars, 0) /
-                  reviewCount
-                ).toFixed(1)
-                : "New";
-
-            return {
-              ...spot,
-              avgStarRating: averageRating,
-              numReviews: reviewCount,
-            };
-          })
-        );
-
-        const sortedSpots = spotsWithRatings.sort(
-          (a, b) =>
-            new Date(b.updatedAt || b.createdAt) -
-            new Date(a.updatedAt || a.createdAt)
-        );
-
-        setSpots(sortedSpots);
-      } catch (error) {
-        console.error("Error fetching spots:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (sessionUser) fetchSpots();
-  }, [sessionUser]);
-
-  const handleUpdate = (spotId) => {
-    navigate(`/spots/${spotId}/edit`);
-  };
-  const handleDelete = async (spotId) => {
-    try {
-      const response = await fetch(`/api/spots/${spotId}`, { method: "DELETE" });
-
-      if (response.ok) {
-        setSpots((prevSpots) => prevSpots.filter((spot) => spot.id !== spotId));
-      } else {
-        console.error("Failed to delete spot");
-      }
-    } catch (error) {
-      console.error("Error deleting spot:", error);
+    if (sessionUser) {
+      dispatch(getAllSpots());
     }
-  };
-  const handleTileClick = (spotId) => {
+  }, [dispatch, sessionUser]);
 
-    navigate(`/spots/${spotId}`);
-  };
+  const handleUpdate = (spotId) => navigate(`/spots/${spotId}/edit`);
+
+  const handleTileClick = (spotId) => navigate(`/spots/${spotId}`);
 
   if (!sessionUser) return <p>Please log in to manage your spots.</p>;
+
 
   return (
     <div className="manage-spots-page">
       <h1>Manage Spots</h1>
-      {isLoading ? (
-        <div className="loading">
-          <p>Loading spots...</p>
-        </div>
-      ) : spots.length === 0 ? (
+      {userSpots.length === 0 ? (
         <div className="no-spots">
           <p className="no-spots-message">You have not created any spots yet.</p>
           <button
@@ -100,7 +43,7 @@ function ManageSpots() {
         </div>
       ) : (
         <div className="spot-list">
-          {spots.map((spot) => (
+          {userSpots.map((spot) => (
             <div
               key={spot.id}
               className="spot-tile"
@@ -120,8 +63,7 @@ function ManageSpots() {
                     <span className="star-icon">⭐️</span>
                     {spot.avgStarRating}{" "}
                     {spot.numReviews > 0
-                      ? `· ${spot.numReviews} Review${spot.numReviews > 1 ? "s" : ""
-                      }`
+                      ? `· ${spot.numReviews} Review${spot.numReviews > 1 ? "s" : ""}`
                       : ""}
                   </div>
                 </div>
@@ -147,7 +89,7 @@ function ManageSpots() {
                     modalComponent={
                       <DeleteSpotModal
                         spotId={spot.id}
-                        onDelete={() => handleDelete(spot.id)}
+                        onDelete={() => dispatch(getAllSpots())}
                       />
                     }
                     onButtonClick={(e) => e.stopPropagation()}
