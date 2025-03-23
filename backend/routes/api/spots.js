@@ -165,6 +165,10 @@ router.get("/current", requireAuth, async (req, res, next) => {
         "Spot.updatedAt",
         "SpotImages.id",
       ],
+      limit: size,
+      offset: (page - 1) * size,
+      subQuery: false,
+      distinct: true,
     });
 
     const formattedSpots = spots.map((spot) => ({
