@@ -24,12 +24,20 @@ const validateSpot = [
     .exists({ checkFalsy: true })
     .withMessage("Country is required"),
   check("lat")
-    .optional()
-    .isFloat({ min: -90, max: 90 })
+    .optional({ nullable: true })
+    .custom((value) => {
+      if (value === null || value === "") return true;
+      const num = parseFloat(value);
+      return num >= -90 && num <= 90;
+    })
     .withMessage("Latitude must be within -90 and 90"),
   check("lng")
-    .optional()
-    .isFloat({ min: -180, max: 180 })
+    .optional({ nullable: true })
+    .custom((value) => {
+      if (value === null || value === "") return true;
+      const num = parseFloat(value);
+      return num >= -180 && num <= 180;
+    })
     .withMessage("Longitude must be within -180 and 180"),
   check("name")
     .exists({ checkFalsy: true })
