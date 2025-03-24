@@ -52,7 +52,7 @@
 
 ### 📷 Landing Page
 
-> > _(![Insert Screenshot URL here](https://redeem-innovations.com/wp-content/uploads/2025/03/Landing-Page.jpg))_  
+> > _(![Insert Screenshot URL here](https://redeem-innovations.com/wp-content/uploads/2025/03/Landing-Page2.jpg))_  
 
 > The homepage displays all available spots with dynamic star ratings, image previews, and prices.
 
