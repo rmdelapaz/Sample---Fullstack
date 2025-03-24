@@ -52,7 +52,7 @@
 
 ### 📷 Landing Page
 
-> > _(![Insert Screenshot URL here](https://redeem-innovations.com/wp-content/uploads/2025/03/Landing-Page2.jpg))_  
+![Landing Page](https://redeem-innovations.com/wp-content/uploads/2025/03/Landing-Page2.jpg)  
 
 > The homepage displays all available spots with dynamic star ratings, image previews, and prices.
 
@@ -60,14 +60,14 @@
 
 ### 📷 Create a Spot
 
-> _(![Insert Screenshot URL here](https://redeem-innovations.com/wp-content/uploads/2025/03/create-a-new-spot.jpg))_  
+![Create a Spot](https://redeem-innovations.com/wp-content/uploads/2025/03/create-a-new-spot.jpg)  
 > Logged-in users can click "creat a new spot" to fill out a multi-section form and create a new spot listing.
 
 ---
 
 ### 📷 Manage Spots
 
-> _(![Insert Screenshot URL here](https://redeem-innovations.com/wp-content/uploads/2025/03/manage-spots.jpg))_  
+![Manage Spots](https://redeem-innovations.com/wp-content/uploads/2025/03/manage-spots.jpg)  
 > Users can manage (update/delete) their spots from the “Manage Spots” dashboard, with updates reflected in real-time.
 
 ---
@@ -81,7 +81,7 @@ Clicking a spot opens a detailed page including full description, host info, ima
 
 ### 📷 Reviews Section
 
-> _(![Insert Screenshot URL here](https://redeem-innovations.com/wp-content/uploads/2025/03/reviews.jpg))_  
+![Reviews Section](https://redeem-innovations.com/wp-content/uploads/2025/03/reviews.jpg)  
 > Users can:
 
 - Submit one review per spot
