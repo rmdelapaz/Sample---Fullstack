@@ -74,7 +74,7 @@
 
 ### 📷 Spot Detail Page
 
-> _(![Insert Screenshot URL here](https://redeem-innovations.com/wp-content/uploads/2025/03/spot-detail.jpg))_  
+_(![Insert Screenshot URL here](https://redeem-innovations.com/wp-content/uploads/2025/03/spot-detail.jpg))_
 > Clicking a spot opens a detailed page including full description, host info, images, rating, and reviews.
 
 ---
