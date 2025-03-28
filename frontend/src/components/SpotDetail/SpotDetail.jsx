@@ -6,8 +6,15 @@ import DeleteReview from "../DeleteReview/DeleteReview";
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import { getSpotDetails } from '../../store/spot'; // use Redux thunk
 import { getReviews } from '../../store/reviews'; // use Redux thunk
+import { createSelector } from 'reselect';// added for memoization 
 
 import './SpotDetail.css';
+
+const selectReviews = (spotId) =>
+  createSelector(
+    (state) => state.reviews.reviews,
+    (reviewsBySpot) => reviewsBySpot[spotId] || []
+  );
 
 function SpotDetail() {
   const { spotId } = useParams();
@@ -15,8 +22,7 @@ function SpotDetail() {
 
   const sessionUser = useSelector((state) => state.session.user);
   const spot = useSelector((state) => state.spots.spot); // use normalized state
-  const reviews = useSelector((state) => state.reviews.reviews[spotId] || []);
-
+  const reviews = useSelector(selectReviews(spotId));
   useEffect(() => {
 
     dispatch(getSpotDetails(spotId)); //  fetch spot details
