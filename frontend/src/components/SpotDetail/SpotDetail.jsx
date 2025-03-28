@@ -1,45 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ReviewFormModal from '../ReviewFormModal/ReviewFormModal';
 import DeleteReview from "../DeleteReview/DeleteReview";
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
+import { getSpotDetails } from '../../store/spot'; // use Redux thunk
+import { getReviews } from '../../store/reviews'; // use Redux thunk
+
 import './SpotDetail.css';
 
 function SpotDetail() {
   const { spotId } = useParams();
-  const [spot, setSpot] = useState(null);
-  const [reviews, setReviews] = useState([]);
+  const dispatch = useDispatch();
+
   const sessionUser = useSelector((state) => state.session.user);
+  const spot = useSelector((state) => state.spots.spot); // use normalized state
+  const reviews = useSelector((state) => state.reviews.reviews[spotId] || []);
 
   useEffect(() => {
 
-    const fetchSpotDetails = async () => {
-      const response = await fetch(`/api/spots/${spotId}`);
-      const data = await response.json();
-      setSpot(data);
-    };
+    dispatch(getSpotDetails(spotId)); //  fetch spot details
+    dispatch(getReviews(spotId));      //  fetch reviews
+  }, [dispatch, spotId]);
 
-
-    const fetchReviews = async () => {
-      const response = await fetch(`/api/spots/${spotId}/reviews`);
-      const data = await response.json();
-      setReviews(data.Reviews || []);
-    };
-
-    fetchSpotDetails();
-    fetchReviews();
-  }, [spotId]);
-  const handleAddReview = (newReview) => {
-    setReviews((prevReviews) => [...prevReviews, newReview]);
-  };
   if (!spot) return <div>Loading...</div>;
 
-  // Calculate average rating and review count 
+  // Calculate average rating and review count
   const reviewCount = reviews.length;
   const averageRating =
     reviewCount > 0
-      ? (reviews.reduce((sum, review) => sum + review.stars, 0) / reviewCount).toFixed(1)
+      ? (parseFloat( // 👉 ensure it's a number before toFixed
+        reviews.reduce((sum, review) => sum + review.stars, 0) / reviewCount
+      ).toFixed(1))
       : "New";
 
   const handleReserve = () => {
@@ -113,49 +105,50 @@ function SpotDetail() {
           ⭐️ {averageRating} · {reviewCount} Review{reviewCount > 1 ? "s" : ""}
         </h3>
 
-        {/* Post Your Review Button */}
-        {sessionUser && sessionUser.id !== spot.ownerId && !reviews.some((review) => review.userId === sessionUser.id) && (
-          <div className="post-review-container">
-            <OpenModalButton
-              buttonText="Post Your Review"
-              className="post-review-button"
-              modalComponent={<ReviewFormModal spotId={spotId} onAddReview={handleAddReview} />}
-            />
-          </div>
-        )}
-        {/* List of Reviews */}
+        {/* 👉 Only show review button if user can post */}
+        {sessionUser &&
+          sessionUser.id !== spot.ownerId &&
+          !reviews.some((review) => review.userId === sessionUser.id) && (
+            <div className="post-review-container">
+              <OpenModalButton
+                buttonText="Post Your Review"
+                className="post-review-button"
+                modalComponent={<ReviewFormModal spotId={spotId} />}
+              />
+            </div>
+          )}
+
+        {/* Reviews List */}
         {reviews.length > 0 ? (
           <div className="reviews-list">
-            {reviews.map((review) => (
-              <div key={review.id} className="review-item">
-                <p>
-                  <strong>{review.User?.firstName}</strong> -{" "}
-                  {new Date(review.createdAt).toLocaleString("en-us", {
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </p>
-                <p>{review.review}</p>
+            {reviews
+              .slice()
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // newest first
+              .map((review) => (
+                <div key={review.id} className="review-item">
+                  <p>
+                    <strong>{review.User?.firstName}</strong> -{" "}
+                    {new Date(review.createdAt).toLocaleString("en-us", {
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </p>
+                  <p>{review.review}</p>
 
-                {/* Delete button only for review owner */}
-                {sessionUser && sessionUser.id === review.userId && (
-                  <OpenModalButton
-                    buttonText="Delete"
-                    className="delete-review-button"
-                    modalComponent={
-                      <DeleteReview
-                        reviewId={review.id}
-                        onReviewDeleted={(deletedReviewId) =>
-                          setReviews((prevReviews) =>
-                            prevReviews.filter((review) => review.id !== deletedReviewId)
-                          )
-                        }
-                      />
-                    }
-                  />
-                )}
-              </div>
-            ))}
+                  {sessionUser && sessionUser.id === review.userId && (
+                    <OpenModalButton
+                      buttonText="Delete"
+                      className="delete-review-button"
+                      modalComponent={
+                        <DeleteReview
+                          reviewId={review.id}
+                          spotId={spotId} // required to update redux
+                        />
+                      }
+                    />
+                  )}
+                </div>
+              ))}
           </div>
         ) : (
           <p className="no-reviews-text">No reviews yet.</p>
