@@ -1,9 +1,5 @@
 # Windbnb (Airbnb Clone)
 
-📍 **Live Site**: [https://windbnb-fullstack.onrender.com/](https://windbnb-fullstack.onrender.com/)  
-💻 **GitHub**: [https://github.com/mina-y-khalil/Windbnb---Fullstack](https://github.com/mina-y-khalil/Windbnb---Fullstack)
-
----
 
 ## 🛠 Technologies Used
 
@@ -21,7 +17,7 @@
 1. **Clone the repo**
 
    ```bash
-   git clone https://github.com/mina-y-khalil/Windbnb---Fullstack
+   git clone <repo>
    ```
 
 2. **Install dependencies**  
