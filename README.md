@@ -1,4 +1,4 @@
-# Windbnb (Airbnb Clone)
+# Sample Fullstack (Airbnb Clone)
 
 
 ## 🛠 Technologies Used
